@@ -22,6 +22,14 @@ except ImportError:
     rq_refresh_cache = None
 
 
+try:
+    import background_task
+    from .django_background_task import refresh_cache as background_refresh_cache
+except ImportError:
+    background_task = None
+    background_refresh_cache = None
+
+
 logger = logging.getLogger('cacheback')
 
 
