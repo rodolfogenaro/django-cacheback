@@ -11,13 +11,13 @@ except ImportError:
 
 try:
     from .tasks import refresh_cache as celery_refresh_cache
-except ImportError:
+except ImportError or ModuleNotFoundError:
     celery_refresh_cache = None
 
 try:
     import django_rq
     from .rq_tasks import refresh_cache as rq_refresh_cache
-except ImportError:
+except ImportError or ModuleNotFoundError:
     django_rq = None
     rq_refresh_cache = None
 
@@ -25,7 +25,7 @@ except ImportError:
 try:
     import background_task
     from .django_background_task import refresh_cache as background_refresh_cache
-except ImportError:
+except ImportError or ModuleNotFoundError:
     background_task = None
     background_refresh_cache = None
 
