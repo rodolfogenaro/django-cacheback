@@ -22,6 +22,7 @@ except ImportError or ModuleNotFoundError:
     rq_refresh_cache = None
 
 
+<<<<<<< HEAD
 try:
     import background_task
     from .django_background_task import refresh_cache as background_refresh_cache
@@ -30,6 +31,8 @@ except ImportError or ModuleNotFoundError:
     background_refresh_cache = None
 
 
+=======
+>>>>>>> parent of abfaf39... add background task support
 logger = logging.getLogger('cacheback')
 
 
