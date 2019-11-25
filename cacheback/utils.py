@@ -25,7 +25,7 @@ except ImportError:
 
 try:
     import background_task
-    from .django_background_task import refresh_cache as background_refresh_cache
+    from .django_background_tasks import refresh_cache as background_refresh_cache
 except ImportError:
     background_task = None
     background_refresh_cache = None
