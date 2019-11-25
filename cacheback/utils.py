@@ -10,14 +10,14 @@ except ImportError:
     import django.utils.importlib as importlib
 
 try:
-    from .tasks import refresh_cache as celery_refresh_cache
-except ImportError or ModuleNotFoundError:
+    from .celery_tasks import refresh_cache as celery_refresh_cache
+except ImportError:
     celery_refresh_cache = None
 
 try:
     import django_rq
     from .rq_tasks import refresh_cache as rq_refresh_cache
-except ImportError or ModuleNotFoundError:
+except ImportError:
     django_rq = None
     rq_refresh_cache = None
 
@@ -26,7 +26,7 @@ except ImportError or ModuleNotFoundError:
 try:
     import background_task
     from .django_background_task import refresh_cache as background_refresh_cache
-except ImportError or ModuleNotFoundError:
+except ImportError:
     background_task = None
     background_refresh_cache = None
 
