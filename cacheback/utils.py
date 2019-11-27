@@ -66,6 +66,6 @@ def enqueue_task(kwargs, task_options=None):
         return celery_refresh_cache.apply_async(kwargs=kwargs, **task_options or {})
 
     elif task_queue == 'django_background_tasks' and background_refresh_cache is not None:
-        return background_refresh_cache(**task_options or {})
+        return background_refresh_cache(**kwargs)
 
     raise ImproperlyConfigured('Unkown task queue configured: {0}'.format(task_queue))
