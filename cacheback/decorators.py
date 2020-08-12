@@ -1,6 +1,4 @@
-from functools import wraps
-
-from django.utils.decorators import available_attrs
+from functools import WRAPPER_ASSIGNMENTS, wraps
 
 from .jobs import FunctionJob
 
@@ -27,7 +25,7 @@ def cacheback(lifetime=None, fetch_on_miss=None, cache_alias=None,
 
     def _wrapper(fn):
         # using available_attrs to work around http://bugs.python.org/issue3445
-        @wraps(fn, assigned=available_attrs(fn))
+        @wraps(fn, assigned=WRAPPER_ASSIGNMENTS)
         def __wrapper(*args, **kwargs):
             return job.get(fn, *args, **kwargs)
         # Assign reference to unwrapped function so that we can access it

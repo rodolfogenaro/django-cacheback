@@ -7,7 +7,6 @@ import warnings
 from django.conf import settings
 from django.core.cache import DEFAULT_CACHE_ALIAS, caches
 from django.db.models import Model as DjangoModel
-from django.utils import six
 from django.utils.deprecation import RenameMethodsBase
 from django.utils.itercompat import is_iterable
 
@@ -33,12 +32,10 @@ def to_bytestring(value):
     """
     if isinstance(value, DjangoModel):
         return ('%s:%s' % (value.__class__, hash(value))).encode('utf-8')
-    if isinstance(value, six.text_type):
+    if isinstance(value, str):
         return value.encode('utf8')
-    if isinstance(value, six.binary_type):
+    if isinstance(value, bytes):
         return value
-    if six.PY2:
-        return str(value)
     return bytes(str(value), 'utf8')
 
 
@@ -51,7 +48,7 @@ class JobBase(RenameMethodsBase):
     )
 
 
-class Job(six.with_metaclass(JobBase)):
+class Job(metaclass=JobBase):
     """
     A cached read job.
 
@@ -232,9 +229,7 @@ class Job(six.with_metaclass(JobBase)):
         args = self.prepare_args(*raw_args)
         kwargs = self.prepare_kwargs(**raw_kwargs)
         key = self.key(*args, **kwargs)
-        item = self.cache.get(key)
-        if item is not None:
-            self.cache.delete(key)
+        self.cache.delete(key)
 
     def raw_get(self, *raw_args, **raw_kwargs):
         """
@@ -423,7 +418,7 @@ class Job(six.with_metaclass(JobBase)):
         """
         if is_iterable(value):
             value = tuple(to_bytestring(v) for v in value)
-        return hashlib.md5(six.b(':').join(value)).hexdigest()
+        return hashlib.md5(b':'.join(value)).hexdigest()
 
     def fetch(self, *args, **kwargs):
         """
